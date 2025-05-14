@@ -18,7 +18,6 @@
 import datetime
 import os
 from zoneinfo import ZoneInfo
-import pandas as pd
 
 import google.auth
 from google.adk.agents import Agent
@@ -84,7 +83,7 @@ def get_store_call_nps_score(store_id: str) -> str:
         store_id: The ID of the store.
 
     Returns:
-        A string containing the store's call NPS score and 5V sample call transcripts.
+        A string containing the store's call NPS score and 5 sample call transcripts.
         Returns an error message if the store ID is not found.
     """
     # Replace this with actual NPS score and transcript retrieval logic.
@@ -119,20 +118,13 @@ def get_store_call_nps_score(store_id: str) -> str:
         return f"Error: Store ID '{store_id}' not found."
 
 
-# def GetStoreID(query:str)->str:
-#     if "what stores" in query:
-#         return "123, 456"
 
-def getLeaderBoard() -> str:
-    # if('leaderboard' in query.lower()):
-    score_dict = {'123':'0.8','456':'0.7'}
-    # df = pd.DataFrame(score_dict, columns = ['Store ID', 'Score'])
-    return score_dict
+
 
 
 root_agent = Agent(
     name="root_agent",
     model="gemini-2.0-flash",
-    instruction="You are a helpful AI assistant designed to provide accurate and useful information. If the user asks for leaderboard, then use getLeaderBoard tool and print the returned output as a nice table. Otherwise use the other two tools. ",
-    tools=[getLeaderBoard, get_store_address, get_store_call_nps_score],
+    instruction="You are a helpful assistant used to retrieve highest ranking stores.",
+    tools=[get_store_call_nps_score],
 )
